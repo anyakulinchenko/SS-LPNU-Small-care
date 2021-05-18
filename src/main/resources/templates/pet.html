@@ -1,0 +1,38 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org/">
+<head th:insert="fragments/head.html :: head">
+    <title id="pageTitle">Мої тваринки</title>
+    <style>
+        p{
+            font-size: 50px;
+
+        }
+    </style>
+</head>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+<div class="row">
+    <div class="col-sm-3">
+        <div class="card mb-4 bg-transparent">
+            <img class="card-img-top" th:src="${'/images/' + pet.getPhotoUrl().toString()+'.png'}" th:alt="${'/images/' + pet.getPhotoUrl().toString()+'.png'}">
+        </div>
+    </div>
+    <div class="col-sm-9">
+        <div>
+            <blockquote>
+                <br>
+                <h3>Ім'я: </h3> <h1 th:text="${pet.getName()}"></h1>
+            </blockquote>
+        </div>
+        <div>
+            <h3>Опис: </h3> <h1 th:text="${pet.getDescription()}"></h1>
+        </div>
+        <div th:if="${owner}">
+            <form th:action="'/my/pets/' + ${pet.getId()} + '/delete/'" method="post">
+                <button class="btn btn-outline-danger" type="submit" value="Delete">Видалити</button>
+            </form>
+        </div>
+    </div>
+</div>
+<link th:href="@{/css/sections/pet.css}" rel="stylesheet">
+</body>
+</html>

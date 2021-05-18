@@ -1,0 +1,124 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org/">
+<head th:insert="fragments/head.html :: head">
+    <title id="pageTitle">Profile</title>
+<body>
+<header th:insert="fragments/header.html :: header"></header>
+<hr>
+<div class="container">
+    <div class="row justify-content-between">
+        <div class="col-sm-10">
+            <h1 th:text="${user.getFirstName()}">Ім'я</h1>
+        </div>
+    </div>
+
+    <div th:if="${error}" class="container"><br/>
+        <div class="alert alert-danger">
+            <strong>Помилка!</strong><br/>
+            Ця пошта вже використовується.
+        </div>
+    </div>
+
+    <form class="form" th:action="@{/my/profile}" th:object="${user}" method="POST" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="text-center">
+                    <img th:src="${'/images/' + user.getPhotoUrl() + '.png'}" class="avatar img-circle img-thumbnail"
+                         alt="avatar">
+                    <h6>Оновити фото</h6>
+                    <div class="col-3">
+                        <input type="file" name="file" class="text-center center-block file-upload" accept="image/*">
+                    </div>
+                </div>
+                <hr>
+                <br>
+            </div>
+            <div class="col-sm-9">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="home">
+                        <hr>
+
+                        <div class="form">
+
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="first_name"><h4>Ім'я</h4></label>
+                                    <input type="text" class="form-control" name="first_name" id="first_name"
+                                           th:field="*{firstName}"
+                                           th:placeholder="${user.getFirstName()}" title="Ім'я">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="last_name"><h4>Прізвище</h4></label>
+                                    <input type="text" class="form-control" name="last_name" id="last_name"
+                                           th:field="*{lastName}"
+                                           th:placeholder="${user.getLastName()}" title="Прізвище">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="phone"><h4>Номер телефону</h4></label>
+                                    <input type="tel" class="form-control" name="phone" id="phone"
+                                           th:field="*{phoneNumber}"
+                                           th:placeholder="${user.getPhoneNumber()}" title="Номер телефону">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="email"><h4>Ел. пошта</h4></label>
+                                    <input type="email" class="form-control" name="email" id="email" th:field="*{email}"
+                                           th:placeholder="${user.getEmail()}" title="Ел. пошта">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="location"><h4>Місто</h4></label>
+                                    <input type="text" class="form-control" id="location" th:field="*{city}"
+                                           th:placeholder="${user.getCity()}"
+                                           title="Місто">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="location"><h4>Район</h4></label>
+                                    <input type="text" class="form-control" id="location" th:field="*{city}"
+                                           th:placeholder="${user.getDistrict()}"
+                                           title="Район">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="password"><h4>Пароль</h4></label>
+                                    <input type="password" class="form-control" name="password" id="password"
+                                           th:field="*{password}"
+                                           placeholder="Пароль" title="Пароль">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <br>
+                                    <button class="btn btn-lg btn-success" type="submit">
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<link th:href="@{/css/sections/profile.css}" rel="stylesheet">
+</body>
+<script type="text/javascript" th:src="@{/js/profile.js}"></script>
+</html>

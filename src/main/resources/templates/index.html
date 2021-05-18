@@ -1,0 +1,167 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org/">
+<head th:insert="fragments/head.html :: head">
+    <title id="pageTitle">Index</title>
+    <style>
+        p{
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+<div th:insert="fragments/header.html :: header"></div>
+
+<main class="text-center align-content-center">
+    <div th:unless="${user != null}" class="jumbotron">
+        <div class="container bg-dark round">
+            <h1>Новенькі?</h1>
+            <p class="lead text-white">Логіньтеся і заходьте. Вас вже зачекалися котики і песики</p>
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div class="col col-12 col-lg-2">
+                        <a href="/signup" class="btn btn-outline-light my-2">Зареєструватися</a>
+                    </div>
+                    <div class="col col-12 col-lg-2">
+                        <a href="/login" class="btn btn-outline-primary my-2">Увійти</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="feedback" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div th:if="${rateEvents != null}">
+                        <div th:each="event : ${rateEvents}">
+                            <form th:action="'/my/events/rate/' + ${event.getId()}" method="post"
+                                  th:object="${event}">
+                                <span th:text="${event.getWorker().getUsername()} + ${event.getWorker().getId()}"></span>
+                                <input type="range" min="0" max="10" name="rating" list="ratingList">
+                                <datalist id="ratingList">
+                                    <option value="0" label="0%">0</option>
+                                    <option value="1"></option>
+                                    <option value="2"></option>
+                                    <option value="3"></option>
+                                    <option value="4"></option>
+                                    <option value="5" label="5%">5</option>
+                                    <option value="6"></option>
+                                    <option value="7"></option>
+                                    <option value="8"></option>
+                                    <option value="9"></option>
+                                    <option value="10" label="10%">10</option>
+                                </datalist>
+                                <input type="text" name="feedback" placeholder="Додайте коментар">
+                                <button type="submit" value="Оцінити">Оцінити</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:if="${user != null}" class="padding">
+        <div class="row">
+            <div class="col-xl-3 col-lg-12	">
+                <div class="container">
+                    <div class="col round bg-dark">
+                        <h4 class="text-white">Мої тваринки</h4>
+                        <div class="row">
+                            <div th:each="pet : ${pets}">
+                                <a th:href="'/pets/' + ${pet.getId().toString()}" class="text-white">
+                                    <img th:src="${'/images/' + pet.getPhotoUrl().toString()+'.png'}"
+                                         th:alt="${pet.getPhotoUrl()}" alt="" src="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-12 ">
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col"><strong>ОПИС</strong></th>
+                        <th scope="col"><strong>ПОЧАТОК</strong></th>
+                        <th scope="col"><strong>КІНЕЦЬ</strong></th>
+                        <th scope="col"><strong>ВАРТІСТЬ</strong></th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                    <tr class='clickable-row bg-secondary' th:data-href="${'/events/'+event.getId().toString()}"
+                        th:each="event : ${events}"
+                        th:if="${event.getStartTime().getDayOfWeek() < event.getStartTime().now().getDayOfWeek()}">
+                        <td th:text="${event.getDescription()}"></td>
+                        <td th:text="${event.getStartTime().getHour().toString() +':'+ event.getStartTime().getMinute().toString()}"></td>
+                        <td th:text="${event.getEndTime().getHour().toString() +':'+ event.getEndTime().getMinute().toString()}"></td>
+                        <td th:text="${event.getPrice()}"></td>
+                    </tr>
+
+                    <tr class='clickable-row bg-warning' th:data-href="${'/events/'+event.getId().toString()}"
+                        th:each="event : ${events}"
+                        th:if="${event.getStartTime().getDayOfWeek() == event.getStartTime().now().getDayOfWeek()}">
+                        <td th:text="${event.getDescription()}"></td>
+                        <td th:text="${event.getStartTime().getHour().toString() +':'+ event.getStartTime().getMinute().toString()}"></td>
+                        <td th:text="${event.getEndTime().getHour().toString() +':'+ event.getEndTime().getMinute().toString()}"></td>
+                        <td th:text="${event.getPrice()}"></td>
+                    </tr>
+
+                    <tr class='clickable-row bg-success' th:data-href="${'/events/'+event.getId().toString()}"
+                        th:each="event : ${events}"
+                        th:if="${event.getStartTime().getDayOfWeek() > event.getStartTime().now().getDayOfWeek()}">
+                        <td th:text="${event.getDescription()}"></td>
+                        <td th:text="${event.getStartTime().getHour().toString() +':'+ event.getStartTime().getMinute().toString()}"></td>
+                        <td th:text="${event.getEndTime().getHour().toString() +':'+ event.getEndTime().getMinute().toString()}"></td>
+                        <td th:text="${event.getPrice()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+            </div>
+
+            <div class="col-xl-3 col-lg-12	">
+                <div class="container">
+                    <div class="col round bg-secondary">
+                        <strong>ВЖЕ ПОЧАЛИСЯ</strong>
+                    </div>
+                    <br>
+                    <div class="col round bg-warning">
+                        <strong>ПОЧНУТЬСЯ СЬОГОДНІ</strong>
+                    </div>
+                    <br>
+                    <div class="col round bg-success">
+                        <strong>ПОЧНУТЬСЯ ЗГОДОМ</strong>
+                    </div>
+                    <br>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+</body>
+<link th:href="@{/css/index/index.css}" rel="stylesheet"/>
+<script>
+    jQuery(document).ready(function ($) {
+        var list = '[[${rateEvents}]]';
+        if (list.length > 2) {
+            $("#feedback").modal('show');
+        }
+
+        $(".clickable-row").click(function () {
+            window.location = $(this).data("href");
+        });
+    });
+</script>
+</html>

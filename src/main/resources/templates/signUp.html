@@ -1,0 +1,46 @@
+<!Doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head th:insert="fragments/head.html :: head">
+    <title id="pageTitle">Реєстрація</title>
+</head>
+<body class="text-center">
+
+<form class="form-signup" action="/users" th:object="${user}" method="post">
+
+    <div th:if="${error}" class="container"><br/>
+        <div class="alert alert-danger">
+            <strong>Помилка!</strong><br/>
+            Ця пошта уже зайнята.
+        </div>
+    </div>
+
+    <style>
+        img{
+            border-radius: 80px 0px;
+        }
+    </style>
+
+    <img th:src="@{/images/Smallcare300.png}" alt="" width="400" >
+    <br><br>
+    <h1 class="h3 mb-3 font-weight-normal">Реєстрація</h1>
+
+    <label type="text"  for="inputName" class="sr-only">Ім'я</label>
+    <input type="text" name="username" th:field="*{firstName}" id="inputName" maxlength="50" class="form-control" placeholder="Ім'я" required autofocus>
+
+    <label type="text"  for="inputEmail" class="sr-only">Ел. пошта</label>
+    <input type="email" th:field="*{email}" id="inputEmail" maxlength="50" class="form-control" placeholder="Ел. пошта" required autofocus>
+
+    <label type="password"  for="inputPassword" class="sr-only">Пароль</label>
+    <input type="password" th:field="*{password}" id="inputPassword" maxlength="50" class="form-control" placeholder="Пароль" required>
+
+    <p><small class="no-account">
+        Вже зареєстрований?
+        <a href="/login">Увійти!</a>
+    </small></p>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit" value="Sign Up">Зареєструватися!</button>
+    <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+</form>
+<link th:href="@{/css/login/sign.css}" rel="stylesheet">
+</body>
+</html>
